@@ -246,6 +246,11 @@ final class Featured_Comments {
 
 	function save_meta_box_postdata( $comment_id ) {
 
+		// Bail if no nonce in POST.
+		if ( ! isset( $_POST['featured_comments_nonce'] ) ) {
+			return;
+		}
+
 		if ( ! wp_verify_nonce( $_POST['featured_comments_nonce'], plugin_basename( __FILE__ ) ) ) {
 			return;
 		}
