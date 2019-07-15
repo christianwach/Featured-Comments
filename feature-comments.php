@@ -250,7 +250,7 @@ final class Featured_Comments {
 			return;
 		}
 
-		if ( !current_user_can( 'moderate_comments', $comment_id ) ) {
+		if ( !current_user_can( 'edit_comment', $comment_id ) ) {
 			comment_footer_die( __( 'You are not allowed to edit comments on this post.', 'featured-comments' ) );
 		}
 
