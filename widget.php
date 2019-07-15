@@ -149,4 +149,13 @@ class Featured_Comments_Widget extends WP_Widget {
 
 
 } // end class
-add_action( 'widgets_init', create_function( '', 'register_widget("Featured_Comments_Widget");' ) );
+
+/**
+ * Register widget.
+ *
+ * Replacement for use of deprecated `create_function`
+ */
+function featured_comments_widgets_register() {
+	register_widget("Featured_Comments_Widget");
+}
+add_action( 'widgets_init', 'featured_comments_widgets_register' );
