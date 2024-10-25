@@ -3,7 +3,7 @@
 Plugin Name: Featured Comments
 Plugin URI: http://pippinsplugins.com/featured-comments
 Description: Lets the admin add "featured" or "buried" css class to selected comments. Handy to highlight comments that add value to your post. Also includes a Featured Comments widget
-Version: 1.2.6
+Version: 2.0.0a
 Author: Pippin Williamson
 Author URI: http://pippinsplugins.com
 Contributors: mordauk, Utkarsh
@@ -245,11 +245,6 @@ final class Featured_Comments {
 	}
 
 	function save_meta_box_postdata( $comment_id ) {
-
-		// Bail if no nonce in POST.
-		if ( ! isset( $_POST['featured_comments_nonce'] ) ) {
-			return;
-		}
 
 		if ( ! wp_verify_nonce( $_POST['featured_comments_nonce'], plugin_basename( __FILE__ ) ) ) {
 			return;
