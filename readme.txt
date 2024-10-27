@@ -1,10 +1,13 @@
 === Featured Comments ===
-Contributors: mordauk, Utkarsh
-Donate link: http://pippinsplugins.com/support-the-site
-Tags: comments, featured comments, feature comments, Pippin's Plugins, pippinsplugins, recent comments
-Requires at least: 3.5
-Tested up to: 4.7
-Stable tag: 2.0.0a
+Contributors:      needle, mordauk, utkarsh
+Donate link:       https://www.paypal.me/interactivist
+Tags:              featured comments, feature comments
+Requires PHP:      7.4
+Requires at least: 4.9
+Tested up to:      6.7
+Stable tag:        2.0.0a
+License:           GPLv2 or later
+License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
 Lets the admin add "featured" or "buried" css class to selected comments. Handy to highlight comments that add value to your post. Also includes a dedicated widget for showing recently featured comments
 

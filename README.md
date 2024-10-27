@@ -1,5 +1,15 @@
 # Featured Comments
 
+**Contributors:** [needle](https://profiles.wordpress.org/needle/), [mordauk](https://profiles.wordpress.org/mordauk/), [utkarsh](https://profiles.wordpress.org/utkarsh/)<br/>
+**Donate link:** https://www.paypal.me/interactivist<br/>
+**Tags:** featured comments, feature comments<br/>
+**Requires PHP:** 7.4<br/>
+**Requires at least:** 4.9<br/>
+**Tested up to:** 6.7<br/>
+**Stable tag:** 2.0.0a<br/>
+**License:** GPLv2 or later<br/>
+**License URI:** https://www.gnu.org/licenses/gpl-2.0.html
+
 Lets admins add "featured" or "buried" css class to selected comments. Handy to highlight comments that add value to your post. Also includes a dedicated widget for showing recently featured comments.
 
 ## Description
