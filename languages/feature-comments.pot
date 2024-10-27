@@ -1,0 +1,109 @@
+# Copyright (C) 2024 Pippin Williamson
+# This file is distributed under the same license as the Featured Comments plugin.
+msgid ""
+msgstr ""
+"Project-Id-Version: Featured Comments 2.0.0a\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/feature-comments\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2024-10-27T13:47:06+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.11.0\n"
+"X-Domain: featured-comments\n"
+
+#. Plugin Name of the plugin
+#: feature-comments.php
+#: feature-comments.php:359
+#: widget.php:36
+#: widget.php:176
+msgid "Featured Comments"
+msgstr ""
+
+#. Plugin URI of the plugin
+#: feature-comments.php
+msgid "http://pippinsplugins.com/featured-comments"
+msgstr ""
+
+#. Description of the plugin
+#: feature-comments.php
+msgid "Lets the admin add \"featured\" or \"buried\" css class to selected comments. Handy to highlight comments that add value to your post. Also includes a Featured Comments widget."
+msgstr ""
+
+#. Author of the plugin
+#: feature-comments.php
+msgid "Pippin Williamson"
+msgstr ""
+
+#. Author URI of the plugin
+#: feature-comments.php
+msgid "http://pippinsplugins.com"
+msgstr ""
+
+#: feature-comments.php:117
+#: feature-comments.php:338
+msgid "Feature"
+msgstr ""
+
+#: feature-comments.php:118
+#: feature-comments.php:337
+msgid "Unfeature"
+msgstr ""
+
+#: feature-comments.php:119
+#: feature-comments.php:341
+msgid "Bury"
+msgstr ""
+
+#: feature-comments.php:120
+#: feature-comments.php:340
+msgid "Unbury"
+msgstr ""
+
+#: feature-comments.php:337
+msgid "Unfeature this comment"
+msgstr ""
+
+#: feature-comments.php:338
+msgid "Feature this comment"
+msgstr ""
+
+#: feature-comments.php:340
+msgid "Unbury this comment"
+msgstr ""
+
+#: feature-comments.php:341
+msgid "Bury this comment"
+msgstr ""
+
+#: feature-comments.php:380
+msgid "Featured"
+msgstr ""
+
+#: feature-comments.php:382
+msgid "Buried"
+msgstr ""
+
+#: feature-comments.php:407
+msgid "You are not allowed to edit comments on this post."
+msgstr ""
+
+#: widget.php:31
+msgid "Display comments marked as \"featured\"."
+msgstr ""
+
+#. translators: 1: The link to the Author, 2: The link to the Comment.
+#: widget.php:115
+msgctxt "widgets"
+msgid "%1$s on %2$s"
+msgstr ""
+
+#: widget.php:184
+msgid "Widget Title:"
+msgstr ""
+
+#: widget.php:189
+msgid "Number to show"
+msgstr ""
