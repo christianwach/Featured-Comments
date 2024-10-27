@@ -33,6 +33,11 @@ All the options will be automatically added to the edit comments table, and sing
 
 == Changelog ==
 
+= 2.0.0 =
+
+* Refactored plugin to conform with PHPCS
+* Fixed class typo from "burry" to "bury"
+
 = 1.2.6 =
 
 * Fixed a bug that caused the Feature / Bury links to not work on pages where comments were loaded through ajax
