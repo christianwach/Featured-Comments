@@ -8,7 +8,7 @@
  * GitHub Plugin URI: https://github.com/christianwach/Featured-Comments
  * Author:            Pippin Williamson
  * Author URI:        http://pippinsplugins.com
- * Version:           2.0.1a
+ * Version:           2.0.1
  * Contributors:      mordauk, Utkarsh
  * Requires at least: 5.7
  * Requires PHP:      7.4
@@ -39,7 +39,7 @@
 defined( 'ABSPATH' ) || exit;
 
 // Set plugin version here.
-define( 'FEATURED_COMMENTS_VERSION', '2.0.1a' );
+define( 'FEATURED_COMMENTS_VERSION', '2.0.1' );
 
 // Store reference to this file.
 if ( ! defined( 'FEATURED_COMMENTS_FILE' ) ) {
