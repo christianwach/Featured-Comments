@@ -10,13 +10,15 @@
 **License:** GPLv2 or later<br/>
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html
 
-Lets admins add "featured" or "buried" css class to selected comments. Handy to highlight comments that add value to your post. Also includes a dedicated widget for showing recently featured comments.
+A WordPress plugin that adds a "featured" or "buried" CSS class and meta value to selected comments.
 
 ## Description
 
-Lets the admin add "featured" or "buried" css class to selected comments. Handy to highlight comments that add value to your post.
+This is an updated fork of the seemingly-abandoned "Featured Comments" plugin by Pippins Plugins, which itself seems to be a fork of a plugin called "Easy Featured Comments".
 
-This plugin makes use of the meta_query option added in WordPress 3.5 to the WP_Comment_Query class, so it is no longer compatible with earlier versions of WordPress.
+Lets the admin add "featured" or "buried" CSS class and meta value to selected comments. Handy to highlight comments that add value to your post.
+
+Also includes a widget for showing recently featured comments.
 
 ## Installation
 
