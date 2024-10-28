@@ -113,10 +113,10 @@ final class Featured_Comments {
 		add_action( 'edit_comment', [ $this, 'save_meta_box_postdata' ] );
 
 		// Add actions to Comment lists.
-		add_filter( 'comment_row_actions', [ $this, 'comment_row_actions' ] );
+		add_filter( 'comment_row_actions', [ $this, 'comment_row_actions' ], 10, 2 );
 
 		// Modify Comments.
-		add_filter( 'comment_class', [ $this, 'comment_class' ] );
+		add_filter( 'comment_class', [ $this, 'comment_class' ], 10, 4 );
 		add_filter( 'comment_text', [ $this, 'comment_text' ], 10, 3 );
 
 		// Scripts and styles.
@@ -231,12 +231,12 @@ final class Featured_Comments {
 		if ( current_user_can( 'moderate_comments' ) ) {
 			?>
 			<style>
-				.feature-comments.unfeature, .feature-comments.unbury { display:none; }
-				.feature-comments { cursor:pointer; }
-				.featured.feature-comments.feature { display:none; }
-				.featured.feature-comments.unfeature { display:inline; }
-				.buried.feature-comments.bury { display:none; }
-				.buried.feature-comments.unbury { display:inline; }
+				.feature-comments.unfeature, .feature-comments.unbury { display: none; }
+				.feature-comments { cursor: pointer; }
+				.featured.feature-comments.feature { display: none; }
+				.featured.feature-comments.unfeature { display: inline; }
+				.buried.feature-comments.bury { display: none; }
+				.buried.feature-comments.unbury { display: inline; }
 				#the-comment-list tr.featured { background-color: #dfd; }
 				#the-comment-list tr.buried { opacity: 0.5; }
 			</style>
@@ -314,29 +314,47 @@ final class Featured_Comments {
 	 *
 	 * @since 1.0
 	 *
-	 * @param string $comment_text The Comment text.
+	 * @param string     $comment_text Text of the comment.
+	 * @param WP_Comment $comment      The Comment object.
+	 * @param array      $args         An array of arguments.
 	 * @return string $comment_text The modified Comment text.
 	 */
-	public function comment_text( $comment_text ) {
+	public function comment_text( $comment_text, $comment, $args = [] ) {
 
+		// Bail if not front end and User does not have capability.
 		if ( is_admin() || ! current_user_can( 'moderate_comments' ) ) {
 			return $comment_text;
 		}
 
-		global $comment;
-
+		// Get the current Comment ID.
 		$comment_id = $comment->comment_ID;
-		$data_id    = ' data-comment_id=' . $comment_id;
 
-		$current_status = implode( ' ', self::comment_class() );
+		// Build Comment classes.
+		$comment_classes = implode( ' ', self::comment_class( [], [], $comment_id, $comment ) );
 
-		$output = '<div class="feature-bury-comments">';
+		// Create a nonce.
+		$nonce = esc_attr( wp_create_nonce( 'featured_comments' ) );
+
+		// Build items array.
+		$items = [];
 		foreach ( self::$actions as $action => $label ) {
-			$output .= "<a class='feature-comments {$current_status} {$action}' data-do='{$action}' {$data_id} data-nonce='" . wp_create_nonce( 'featured_comments' ) . "' title='{$label}'>{$label}</a> ";
+			$items[] = sprintf(
+				'<a data-do="%s" data-comment-id="%s" data-nonce="%s" class="%s" title="%s">%s</a>',
+				$action,
+				$comment_id,
+				esc_attr( wp_create_nonce( 'featured_comments' ) ),
+				esc_attr( 'feature-comments ' . $comment_classes . ' ' . $action ),
+				esc_attr( $label ),
+				esc_html( $label )
+			);
 		}
-		$output .= '</div>';
 
-		return $comment_text . $output;
+		$comment_text .= sprintf(
+			'<div class="feature-bury-comments">%s</div>',
+			implode( $items )
+		);
+
+		return $comment_text;
 
 	}
 
@@ -345,28 +363,71 @@ final class Featured_Comments {
 	 *
 	 * @since 1.0
 	 *
-	 * @param string $actions The Comment row actions.
+	 * @param string[]   $actions An array of Comment actions.
+	 * @param WP_Comment $comment The Comment object.
 	 * @return string $actions The modified Comment row actions.
 	 */
-	public function comment_row_actions( $actions ) {
+	public function comment_row_actions( $actions, $comment ) {
 
-		global $comment, $post, $approve_nonce;
-
+		// Get the current Comment ID.
 		$comment_id = $comment->comment_ID;
 
-		$data_id = ' data-comment_id=' . $comment->comment_ID;
+		// Build Comment classes.
+		$comment_classes = implode( ' ', self::comment_class( [], [], $comment_id, $comment ) );
 
-		$current_status = implode( ' ', self::comment_class() );
+		// Create a nonce.
+		$nonce = esc_attr( wp_create_nonce( 'featured_comments' ) );
 
-		$o  = '';
-		$o .= "<a data-do='unfeature' {$data_id} data-nonce='" . wp_create_nonce( 'featured_comments' ) . "' class='feature-comments unfeature {$current_status} dim:the-comment-list:comment-{$comment->comment_ID}:unfeatured:e7e7d3:e7e7d3:new=unfeatured vim-u' title='" . esc_attr__( 'Unfeature this comment', 'featured-comments' ) . "'>" . __( 'Unfeature', 'featured-comments' ) . '</a>';
-		$o .= "<a data-do='feature' {$data_id} data-nonce='" . wp_create_nonce( 'featured_comments' ) . "' class='feature-comments feature {$current_status} dim:the-comment-list:comment-{$comment->comment_ID}:unfeatured:e7e7d3:e7e7d3:new=featured vim-a' title='" . esc_attr__( 'Feature this comment', 'featured-comments' ) . "'>" . __( 'Feature', 'featured-comments' ) . '</a>';
-		$o .= ' | ';
-		$o .= "<a data-do='unbury' {$data_id} data-nonce='" . wp_create_nonce( 'featured_comments' ) . "' class='feature-comments unbury {$current_status} dim:the-comment-list:comment-{$comment->comment_ID}:unburied:e7e7d3:e7e7d3:new=unburied vim-u' title='" . esc_attr__( 'Unbury this comment', 'featured-comments' ) . "'>" . __( 'Unbury', 'featured-comments' ) . '</a>';
-		$o .= "<a data-do='bury' {$data_id}  data-nonce='" . wp_create_nonce( 'featured_comments' ) . "' class='feature-comments bury {$current_status} dim:the-comment-list:comment-{$comment->comment_ID}:unburied:e7e7d3:e7e7d3:new=buried vim-a' title='" . esc_attr__( 'Bury this comment', 'featured-comments' ) . "'>" . __( 'Bury', 'featured-comments' ) . '</a>';
-		$o  = "<span class='$current_status'>$o</span>";
+		$unfeature = sprintf(
+			'<a data-do="unfeature" data-comment-id="%s" data-nonce="%s" class="%s" aria-label="%s" title="%s">%s</a>',
+			$comment_id,
+			$nonce,
+			'feature-comments unfeature vim-u ' . $comment_classes,
+			"dim:the-comment-list:comment-{$comment_id}:unfeatured:e7e7d3:e7e7d3:new=unfeatured",
+			esc_attr__( 'Unfeature this comment', 'featured-comments' ),
+			esc_html__( 'Unfeature', 'featured-comments' )
+		);
 
-		$actions['feature_comments'] = $o;
+		$feature = sprintf(
+			'<a data-do="feature" data-comment-id="%s" data-nonce="%s" class="%s" aria-label="%s" title="%s">%s</a>',
+			$comment_id,
+			$nonce,
+			'feature-comments feature vim-a ' . $comment_classes,
+			"dim:the-comment-list:comment-{$comment_id}:unfeatured:e7e7d3:e7e7d3:new=featured",
+			esc_attr__( 'Feature this comment', 'featured-comments' ),
+			esc_html__( 'Feature', 'featured-comments' )
+		);
+
+		$unbury = sprintf(
+			'<a data-do="unbury" data-comment-id="%s" data-nonce="%s" class="%s" aria-label="%s" title="%s">%s</a>',
+			$comment_id,
+			$nonce,
+			'feature-comments unbury vim-u ' . $comment_classes,
+			"dim:the-comment-list:comment-{$comment_id}:unburied:e7e7d3:e7e7d3:new=unburied",
+			esc_attr__( 'Unbury this comment', 'featured-comments' ),
+			esc_html__( 'Unbury', 'featured-comments' )
+		);
+
+		$bury = sprintf(
+			'<a data-do="bury" data-comment-id="%s" data-nonce="%s" class="%s" aria-label="%s" title="%s">%s</a>',
+			$comment_id,
+			$nonce,
+			'feature-comments bury vim-a ' . $comment_classes,
+			"dim:the-comment-list:comment-{$comment_id}:unburied:e7e7d3:e7e7d3:new=buried",
+			esc_attr__( 'Bury this comment', 'featured-comments' ),
+			esc_html__( 'Bury', 'featured-comments' )
+		);
+
+		$wrapper = sprintf(
+			'<span class="%s">%s%s | %s%s</span>',
+			$comment_classes,
+			$unfeature,
+			$feature,
+			$unbury,
+			$bury
+		);
+
+		$actions['feature_comments'] = $wrapper;
 
 		return $actions;
 
@@ -442,14 +503,13 @@ final class Featured_Comments {
 	 *
 	 * @since 1.0
 	 *
-	 * @param array $classes The array of Comment classes.
+	 * @param string[]   $classes    An array of comment classes.
+	 * @param string[]   $css_class  An array of additional classes added to the list.
+	 * @param string     $comment_id The Comment ID as a numeric string.
+	 * @param WP_Comment $comment    The Comment object.
 	 * @return array $classes The modified array of Comment classes.
 	 */
-	public function comment_class( $classes = [] ) {
-
-		global $comment;
-
-		$comment_id = $comment->comment_ID;
+	public function comment_class( $classes = [], $css_class = [], $comment_id = 0, $comment = null ) {
 
 		if ( self::is_comment_featured( $comment_id ) ) {
 			$classes[] = 'featured';

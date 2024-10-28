@@ -21,7 +21,7 @@ function featured_comments_click() {
 			},
 			function( response ) {
 				var action = $this.attr('data-do'),
-					comment_id = $this.attr('data-comment_id'),
+					comment_id = $this.attr('data-comment-id'),
 					$comment = jQuery("#comment-" + comment_id + ", #li-comment-" + comment_id),
 					$this_and_comment = $this.siblings('.feature-comments').add($comment).add($this);
 				if ( action == 'feature' ) {
