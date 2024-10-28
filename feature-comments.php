@@ -38,6 +38,24 @@
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
 
+// Set plugin version here.
+define( 'FEATURED_COMMENTS_VERSION', '2.0.1a' );
+
+// Store reference to this file.
+if ( ! defined( 'FEATURED_COMMENTS_FILE' ) ) {
+	define( 'FEATURED_COMMENTS_FILE', __FILE__ );
+}
+
+// Store URL to this plugin's directory.
+if ( ! defined( 'FEATURED_COMMENTS_URL' ) ) {
+	define( 'FEATURED_COMMENTS_URL', plugin_dir_url( FEATURED_COMMENTS_FILE ) );
+}
+
+// Store path to this plugin's directory.
+if ( ! defined( 'FEATURED_COMMENTS_PATH' ) ) {
+	define( 'FEATURED_COMMENTS_PATH', plugin_dir_path( FEATURED_COMMENTS_FILE ) );
+}
+
 /**
  * Featured Comments class.
  *
@@ -141,7 +159,7 @@ final class Featured_Comments {
 	public function load_textdomain() {
 
 		// Set filter for plugin's languages directory.
-		$lang_dir = dirname( plugin_basename( __FILE__ ) ) . '/languages/';
+		$lang_dir = dirname( plugin_basename( FEATURED_COMMENTS_FILE ) ) . '/languages/';
 		$lang_dir = apply_filters( 'featured_comments_languages_directory', $lang_dir );
 
 		// Traditional WordPress plugin locale filter.
@@ -189,7 +207,7 @@ final class Featured_Comments {
 	public function register_widgets() {
 
 		// Register default widget.
-		include_once dirname( __FILE__ ) . '/widget.php';
+		include_once dirname( FEATURED_COMMENTS_FILE ) . '/widget.php';
 		register_widget( 'Featured_Comments_Widget' );
 
 	}
@@ -207,9 +225,9 @@ final class Featured_Comments {
 
 		wp_enqueue_script(
 			'featured_comments',
-			plugin_dir_url( __FILE__ ) . 'feature-comments.js',
+			FEATURED_COMMENTS_URL . 'assets/js/feature-comments.js',
 			[ 'jquery' ],
-			filemtime( dirname( __FILE__ ) . '/feature-comments.js' ),
+			FEATURED_COMMENTS_VERSION,
 			true
 		);
 
@@ -222,26 +240,18 @@ final class Featured_Comments {
 	}
 
 	/**
-	 * Enqueue styles.
+	 * Write inline CSS styles.
 	 *
 	 * @since 1.0
 	 */
 	public function print_styles() {
 
-		if ( current_user_can( 'moderate_comments' ) ) {
-			?>
-			<style>
-				.feature-comments.unfeature, .feature-comments.unbury { display: none; }
-				.feature-comments { cursor: pointer; }
-				.featured.feature-comments.feature { display: none; }
-				.featured.feature-comments.unfeature { display: inline; }
-				.buried.feature-comments.bury { display: none; }
-				.buried.feature-comments.unbury { display: inline; }
-				#the-comment-list tr.featured { background-color: #dfd; }
-				#the-comment-list tr.buried { opacity: 0.5; }
-			</style>
-			<?php
+		if ( ! current_user_can( 'moderate_comments' ) ) {
+			return;
 		}
+
+		// Include inline CSS template.
+		include FEATURED_COMMENTS_PATH . 'assets/css/feature-comments-inline.php';
 
 	}
 
@@ -441,7 +451,7 @@ final class Featured_Comments {
 	public function add_meta_box() {
 
 		add_meta_box(
-			'comment_meta_box',
+			'feature_bury_comment_meta_box',
 			__( 'Featured Comments', 'featured-comments' ),
 			[ $this, 'comment_meta_box' ],
 			'comment',
@@ -454,19 +464,28 @@ final class Featured_Comments {
 	 * Renders the meta box.
 	 *
 	 * @since 1.0
+	 *
+	 * @param WP_Comment $comment The Comment object.
+	 * @param array      $box {
+	 *     Comment meta box arguments.
+	 *
+	 *     @type string   $id       Meta box ID.
+	 *     @type string   $title    Meta box title.
+	 *     @type callback $callback Meta box display callback.
+	 *     @type array    $args {
+	 *         Extra meta box arguments.
+	 *     }
+	 * }
 	 */
-	public function comment_meta_box() {
+	public function comment_meta_box( $comment, $box ) {
 
-		global $comment;
+		// Populate template vars.
 		$comment_id = $comment->comment_ID;
+		$featured   = self::is_comment_featured( $comment_id );
+		$buried     = self::is_comment_buried( $comment_id );
 
-		wp_nonce_field( plugin_basename( __FILE__ ), 'featured_comments_nonce' );
-		echo '<p>';
-		echo '<input id = "featured" type="checkbox" name="featured" value="true"' . checked( true, self::is_comment_featured( $comment_id ), false ) . '/>';
-		echo ' <label for="featured">' . esc_html__( 'Featured', 'featured-comments' ) . '</label>&nbsp;';
-		echo '<input id = "buried" type="checkbox" name="buried" value="true"' . checked( true, self::is_comment_buried( $comment_id ), false ) . '/>';
-		echo ' <label for="buried">' . esc_html__( 'Buried', 'featured-comments' ) . '</label>';
-		echo '</p>';
+		// Include template.
+		include FEATURED_COMMENTS_PATH . 'assets/templates/metabox-comment.php';
 
 	}
 
@@ -485,7 +504,7 @@ final class Featured_Comments {
 			return;
 		}
 
-		if ( ! wp_verify_nonce( $nonce, plugin_basename( __FILE__ ) ) ) {
+		if ( ! wp_verify_nonce( $nonce, plugin_basename( FEATURED_COMMENTS_FILE ) ) ) {
 			return;
 		}
 

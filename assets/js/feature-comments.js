@@ -1,4 +1,12 @@
 /**
+ * Featured Comments Javascript.
+ *
+ * @since 1.0
+ *
+ * @package Featured_Comments
+ */
+
+/**
  * Adds a click handler to "Edit Comment" links.
  *
  * @since 1.0
