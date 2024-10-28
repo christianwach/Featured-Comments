@@ -330,7 +330,12 @@ final class Featured_Comments {
 	 * @param array      $args         An array of arguments.
 	 * @return string $comment_text The modified Comment text.
 	 */
-	public function comment_text( $comment_text, $comment, $args = [] ) {
+	public function comment_text( $comment_text = '', $comment = null, $args = [] ) {
+
+		// Bail if no Comment.
+		if ( empty( $comment ) ) {
+			return $comment_text;
+		}
 
 		// Bail if not front end and User does not have capability.
 		if ( is_admin() || ! current_user_can( 'moderate_comments' ) ) {
