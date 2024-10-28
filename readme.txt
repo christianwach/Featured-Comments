@@ -34,6 +34,11 @@ All the options will be automatically added to the edit comments table, and sing
 
 == Changelog ==
 
+= 2.0.1 =
+
+* Improve string handling
+* Move markup to template files
+
 = 2.0.0 =
 
 * Refactored plugin to conform with PHPCS
