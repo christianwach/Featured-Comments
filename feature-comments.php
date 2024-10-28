@@ -8,7 +8,7 @@
  * GitHub Plugin URI: https://github.com/christianwach/Featured-Comments
  * Author:            Pippin Williamson
  * Author URI:        http://pippinsplugins.com
- * Version:           2.0.0
+ * Version:           2.0.1a
  * Contributors:      mordauk, Utkarsh
  * Requires at least: 5.7
  * Requires PHP:      7.4
