@@ -194,15 +194,3 @@ class Featured_Comments_Widget extends WP_Widget {
 	}
 
 }
-
-/**
- * Register widget.
- *
- * Replacement for use of deprecated `create_function`.
- *
- * @since 1.2.6
- */
-function featured_comments_widgets_register() {
-	register_widget( 'Featured_Comments_Widget' );
-}
-add_action( 'widgets_init', 'featured_comments_widgets_register' );

@@ -79,10 +79,9 @@ final class Featured_Comments {
 
 		if ( ! isset( self::$instance ) ) {
 
+			// Bootstrap instance.
 			self::$instance = new Featured_Comments();
-			self::$instance->includes();
-			self::$instance->init();
-			self::$instance->load_textdomain();
+			self::$instance->register_hooks();
 
 			/**
 			 * Fires when this plugin is loaded.
@@ -98,47 +97,44 @@ final class Featured_Comments {
 	}
 
 	/**
-	 * Loads widget class file.
+	 * Register hook callbacks.
 	 *
 	 * @since 1.0
+	 * @since 2.0.1 Renamed.
 	 */
-	private function includes() {
-		include_once dirname( __FILE__ ) . '/widget.php';
-	}
+	private function register_hooks() {
 
-	/**
-	 * Initialise Filters & Actions.
-	 *
-	 * @since 1.0
-	 */
-	private function init() {
+		// Init localisation.
+		add_action( 'init', [ $this, 'load_textdomain' ] );
+		add_action( 'init', [ $this, 'load_translations' ] );
 
-		self::$actions = [
-			'feature'   => __( 'Feature', 'featured-comments' ),
-			'unfeature' => __( 'Unfeature', 'featured-comments' ),
-			'bury'      => __( 'Bury', 'featured-comments' ),
-			'unbury'    => __( 'Unbury', 'featured-comments' ),
-		];
-
-		// Back end.
-		add_action( 'edit_comment', [ $this, 'save_meta_box_postdata' ] );
+		// Add metabox to "Edit Comment" screen.
 		add_action( 'admin_menu', [ $this, 'add_meta_box' ] );
-		add_action( 'wp_ajax_feature_comments', [ $this, 'ajax' ] );
-		add_filter( 'comment_text', [ $this, 'comment_text' ], 10, 3 );
+		add_action( 'edit_comment', [ $this, 'save_meta_box_postdata' ] );
+
+		// Add actions to Comment lists.
 		add_filter( 'comment_row_actions', [ $this, 'comment_row_actions' ] );
 
+		// Modify Comments.
+		add_filter( 'comment_class', [ $this, 'comment_class' ] );
+		add_filter( 'comment_text', [ $this, 'comment_text' ], 10, 3 );
+
+		// Scripts and styles.
 		add_action( 'wp_print_scripts', [ $this, 'print_scripts' ] );
 		add_action( 'admin_print_scripts', [ $this, 'print_scripts' ] );
 		add_action( 'wp_print_styles', [ $this, 'print_styles' ] );
 		add_action( 'admin_print_styles', [ $this, 'print_styles' ] );
 
-		// Front end.
-		add_filter( 'comment_class', [ $this, 'comment_class' ] );
+		// AJAX callback.
+		add_action( 'wp_ajax_feature_comments', [ $this, 'ajax' ] );
+
+		// Register widgets.
+		add_action( 'widgets_init', [ $this, 'register_widgets' ] );
 
 	}
 
 	/**
-	 * Initialise translation.
+	 * Loads the plugin text domain.
 	 *
 	 * @since 1.0
 	 */
@@ -166,6 +162,35 @@ final class Featured_Comments {
 			// Load the default language files.
 			load_plugin_textdomain( 'featured-comments', false, $lang_dir );
 		}
+
+	}
+
+	/**
+	 * Loads the translated action array.
+	 *
+	 * @since 2.0.1
+	 */
+	public function load_translations() {
+
+		self::$actions = [
+			'feature'   => __( 'Feature', 'featured-comments' ),
+			'unfeature' => __( 'Unfeature', 'featured-comments' ),
+			'bury'      => __( 'Bury', 'featured-comments' ),
+			'unbury'    => __( 'Unbury', 'featured-comments' ),
+		];
+
+	}
+
+	/**
+	 * Registers widgets for this plugin.
+	 *
+	 * @since 2.0.1
+	 */
+	public function register_widgets() {
+
+		// Register default widget.
+		include_once dirname( __FILE__ ) . '/widget.php';
+		register_widget( 'Featured_Comments_Widget' );
 
 	}
 
@@ -421,6 +446,7 @@ final class Featured_Comments {
 	 * @return array $classes The modified array of Comment classes.
 	 */
 	public function comment_class( $classes = [] ) {
+
 		global $comment;
 
 		$comment_id = $comment->comment_ID;
@@ -438,7 +464,7 @@ final class Featured_Comments {
 	}
 
 	/**
-	 * Checks of a Comment is featured.
+	 * Checks if a Comment is featured.
 	 *
 	 * @since 1.0
 	 *
@@ -456,7 +482,7 @@ final class Featured_Comments {
 	}
 
 	/**
-	 * Checks of a Comment is buried.
+	 * Checks if a Comment is buried.
 	 *
 	 * @since 1.0
 	 *
