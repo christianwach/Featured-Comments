@@ -127,8 +127,8 @@ final class Featured_Comments {
 		add_action( 'init', [ $this, 'load_translations' ] );
 
 		// Add metabox to "Edit Comment" screen.
-		add_action( 'admin_menu', [ $this, 'add_meta_box' ] );
-		add_action( 'edit_comment', [ $this, 'save_meta_box_postdata' ] );
+		add_action( 'admin_menu', [ $this, 'meta_box_add' ] );
+		add_action( 'edit_comment', [ $this, 'meta_box_data_save' ] );
 
 		// Add actions to Comment lists.
 		add_filter( 'comment_row_actions', [ $this, 'comment_row_actions' ], 10, 2 );
@@ -144,7 +144,7 @@ final class Featured_Comments {
 		add_action( 'admin_print_styles', [ $this, 'print_styles' ] );
 
 		// AJAX callback.
-		add_action( 'wp_ajax_feature_comments', [ $this, 'ajax' ] );
+		add_action( 'wp_ajax_feature_comments', [ $this, 'ajax_handler' ] );
 
 		// Register widgets.
 		add_action( 'widgets_init', [ $this, 'register_widgets' ] );
@@ -259,8 +259,9 @@ final class Featured_Comments {
 	 * AJAX callback.
 	 *
 	 * @since 1.0
+	 * @since 2.0.1 Renamed.
 	 */
-	public function ajax() {
+	public function ajax_handler() {
 
 		// Since this is an AJAX request, check security.
 		$result = check_ajax_referer( 'featured_comments', false, false );
@@ -447,13 +448,14 @@ final class Featured_Comments {
 	 * Adds meta box.
 	 *
 	 * @since 1.0
+	 * @since 2.0.1 Renamed.
 	 */
-	public function add_meta_box() {
+	public function meta_box_add() {
 
 		add_meta_box(
 			'feature_bury_comment_meta_box',
 			__( 'Featured Comments', 'featured-comments' ),
-			[ $this, 'comment_meta_box' ],
+			[ $this, 'meta_box_render' ],
 			'comment',
 			'normal'
 		);
@@ -464,6 +466,7 @@ final class Featured_Comments {
 	 * Renders the meta box.
 	 *
 	 * @since 1.0
+	 * @since 2.0.1 Renamed.
 	 *
 	 * @param WP_Comment $comment The Comment object.
 	 * @param array      $box {
@@ -477,7 +480,7 @@ final class Featured_Comments {
 	 *     }
 	 * }
 	 */
-	public function comment_meta_box( $comment, $box ) {
+	public function meta_box_render( $comment, $box ) {
 
 		// Populate template vars.
 		$comment_id = $comment->comment_ID;
@@ -493,10 +496,11 @@ final class Featured_Comments {
 	 * Saves data from meta box.
 	 *
 	 * @since 1.0
+	 * @since 2.0.1 Renamed.
 	 *
 	 * @param integer $comment_id The ID of the Comment.
 	 */
-	public function save_meta_box_postdata( $comment_id ) {
+	public function meta_box_data_save( $comment_id ) {
 
 		// Bail if no nonce in POST.
 		$nonce = isset( $_POST['featured_comments_nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['featured_comments_nonce'] ) ) : '';
