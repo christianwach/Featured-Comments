@@ -367,7 +367,7 @@ final class Featured_Comments {
 
 		$comment_text .= sprintf(
 			'<div class="feature-bury-comments">%s</div>',
-			implode( $items )
+			implode( ' ', $items )
 		);
 
 		return $comment_text;
