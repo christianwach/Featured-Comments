@@ -2,21 +2,21 @@
 # This file is distributed under the same license as the Featured Comments plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Featured Comments 2.0.0a\n"
+"Project-Id-Version: Featured Comments 2.0.1a\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/feature-comments\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-10-27T13:53:19+00:00\n"
+"POT-Creation-Date: 2024-10-28T17:24:26+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: featured-comments\n"
 
 #. Plugin Name of the plugin
 #: feature-comments.php
-#: feature-comments.php:359
+#: feature-comments.php:462
 #: widget.php:36
 #: widget.php:176
 msgid "Featured Comments"
@@ -42,51 +42,51 @@ msgstr ""
 msgid "http://pippinsplugins.com"
 msgstr ""
 
-#: feature-comments.php:117
-#: feature-comments.php:338
-msgid "Feature"
-msgstr ""
-
-#: feature-comments.php:118
-#: feature-comments.php:337
-msgid "Unfeature"
-msgstr ""
-
-#: feature-comments.php:119
-#: feature-comments.php:341
-msgid "Bury"
-msgstr ""
-
-#: feature-comments.php:120
-#: feature-comments.php:340
-msgid "Unbury"
-msgstr ""
-
-#: feature-comments.php:337
-msgid "Unfeature this comment"
-msgstr ""
-
-#: feature-comments.php:338
-msgid "Feature this comment"
-msgstr ""
-
-#: feature-comments.php:340
-msgid "Unbury this comment"
-msgstr ""
-
-#: feature-comments.php:341
-msgid "Bury this comment"
-msgstr ""
-
-#: feature-comments.php:380
+#: assets/templates/metabox-comment.php:17
 msgid "Featured"
 msgstr ""
 
-#: feature-comments.php:382
+#: assets/templates/metabox-comment.php:17
 msgid "Buried"
 msgstr ""
 
-#: feature-comments.php:407
+#: feature-comments.php:194
+#: feature-comments.php:414
+msgid "Feature"
+msgstr ""
+
+#: feature-comments.php:195
+#: feature-comments.php:404
+msgid "Unfeature"
+msgstr ""
+
+#: feature-comments.php:196
+#: feature-comments.php:434
+msgid "Bury"
+msgstr ""
+
+#: feature-comments.php:197
+#: feature-comments.php:424
+msgid "Unbury"
+msgstr ""
+
+#: feature-comments.php:403
+msgid "Unfeature this comment"
+msgstr ""
+
+#: feature-comments.php:413
+msgid "Feature this comment"
+msgstr ""
+
+#: feature-comments.php:423
+msgid "Unbury this comment"
+msgstr ""
+
+#: feature-comments.php:433
+msgid "Bury this comment"
+msgstr ""
+
+#: feature-comments.php:521
 msgid "You are not allowed to edit comments on this post."
 msgstr ""
 
